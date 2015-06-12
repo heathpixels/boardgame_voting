@@ -1,0 +1,406 @@
+body {
+	font-family: 'Dosis', sans-serif;
+	font-size: 1.2em;
+}
+
+#header {
+	width: 100%;
+	height: 200px;
+	font-family: 'Bangers', cursive;
+	background: -webkit-linear-gradient(left top, red, lightgray); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, red, lightgray); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, red, lightgray); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, red, lightgray); /* Standard syntax (must be last) */
+    position: relative;
+}
+
+h1 {
+	height: 100%;
+	width: 50%;
+	color: navy;
+	font-size: 6em;
+	text-shadow: 2px 3px 5px yellow;
+	margin:0;
+	padding-left:10%;
+    line-height: 200px;
+	float:left;
+}
+
+h3 {
+	font-family: 'Bangers', cursive;
+	font-size: 1.2em;
+}
+
+#wrapper {
+  min-width: 1000px;
+  min-height: 1000px;
+  display: block;
+  position: relative;
+}
+
+#wrapper::after {
+	content: "";
+ 	background: url("gplaypattern.png");
+ 	opacity: 1;
+ 	top: 0;
+ 	left: 0;
+ 	bottom: 0;
+  	right: 0;
+  	position: absolute;
+  	z-index: -1;   
+}
+
+
+a {
+	text-decoration: none;
+}
+
+a:visited {
+	color: blue;
+}
+
+a:hover {
+	font-size: 1.25em;
+}
+
+ul {
+	list-style-type: none;
+}
+
+img {
+	content: url("meeple.png");
+	background-repeat: no-repeat;
+	width: 30px;
+	height: auto;
+	margin: 0;
+	padding: 0;
+}
+
+img:hover {
+	content: url("yellowmeeple.png");
+}
+
+#voting_table {
+	text-align: left;
+}
+
+#right_pane {
+	float: right;
+	margin-right: 10%;
+}
+
+#left_pane {
+	float: left;
+	margin-left: 5%;
+}
+
+
+th {
+	text-align: center;
+}
+
+td a {
+	padding-right: 10px;
+}
+
+.votes {
+	padding-left: 7%;
+}
+
+#login_button {
+	float:right;
+	font-size: 2em;
+	margin: 1% 3% 1% 1%;
+	border-radius: 10px;
+	padding: 1% 2%;
+	background-color: green;
+	margin-top:100px;
+}
+
+#login_button:hover {
+	padding: 1.5% 2.5%;
+	box-shadow: 5px 5px 5px black;
+}
+
+#login_button:active {
+	padding: 1.5% 2.5%;
+	top: 5px;
+	box-shadow: 1px 1px 2px black;
+}
+
+#login_button:active:before {
+	top: -11px;
+	bottom: -5px;
+	content: "";
+}
+
+#login_btn_label {
+	float: right;
+	font-size: 1.5em;
+	padding-top: 3%;
+	margin-top: 100px;
+}
+
+#login_dialog {
+	position:absolute;
+	margin-top: 10%;
+	margin-left: 20%;
+	background-color: lightgrey;
+	border-radius: 15px;
+	border-style: double;
+	border-width: 7px;
+	color: blue;
+	width: 700px;
+	height: 450px;
+	z-index: 100;
+	text-align: center;
+	font-size: 2em;
+	display: none;
+}
+
+#close_button {
+	font-family: 'Bangers', cursive;
+	font-size: 1.2em;
+	float: right;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+#email_label{
+	display:none;
+}
+
+#txtbox_email{
+	display:none;
+}
+
+#create_account {
+	font-size: .5em;
+	text-decoration: underline;
+	width:100%;
+	padding-top: 30px;
+	cursor: pointer;
+}
+
+#submit_button{
+	display:none;
+	margin-top: 30px;
+	border-radius: 10px;
+}
+
+#login_dialog_btn {
+	border-radius: 10px;
+}
+
+.status_busy::before {
+	display: block;
+	content: url("redmeeple.png");
+	width: 30px;
+	height: 5px;
+	-webkit-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
+    -moz-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
+}
+
+.status_going::before {
+	display:block;
+	content: url("greenmeeple.png");
+	width:30px;
+	height:5px;
+	-webkit-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
+    -moz-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
+}
+
+.status_neutral::before {
+	display:block;
+	content: url("blackmeeple.png");
+	width:30px;
+	height:5px;
+	-webkit-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
+    -moz-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
+}
+
+#key {
+	margin-top: 100px;
+	border: 3px double black;
+	border-radius: 5px;
+	padding-top: 10px;
+	padding-left: 20px;
+	width: 200px;
+}
+
+.rating {
+  width: 240px;
+  height: 50px;
+  position: relative;
+  background: url("meeple.png") 0px 0/40px no-repeat, url("meeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
+.rating, .rating li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0;
+}
+
+.rating li {
+  height: 50px;
+  position: absolute;
+}
+
+.rating a {
+  width: 100%;
+  height: 50px;
+  display: block;
+}
+
+.rating .star-1 {
+  width: 40px;
+  z-index: 5;
+}
+
+.rating .star-1:hover {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("meeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
+.rating .star-2 {
+  width: 90px;
+  z-index: 4;
+}
+
+.rating .star-2:hover {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
+.rating .star-3 {
+  width: 140px;
+  z-index: 3;
+}
+
+.rating .star-3:hover {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
+.rating .star-4 {
+  width: 190px;
+  z-index: 2;
+}
+
+.rating .star-4:hover {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("yellowmeeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
+.rating .star-5 {
+  width: 240px;
+  z-index: 1;
+}
+
+.rating .star-5:hover {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("yellowmeeple.png") 150px 0/40px no-repeat, url("yellowmeeple.png") 200px 0/40px no-repeat;
+}
+
+.rating2 {
+  width: 550px;
+  height: 60px;
+  position: relative;
+  background: url("meeple.png") 0px 0/60px no-repeat, url("meeple.png") 70px 0/60px no-repeat, url("meeple.png") 140px 0/60px no-repeat, url("meeple.png") 210px 0/60px no-repeat, url("meeple.png") 280px 0/60px no-repeat, url("meeple.png") 350px 0/60px no-repeat, url("meeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2, .rating2 li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0;
+}
+
+.rating2 li {
+  height: 60px;
+  position: absolute;
+}
+
+.rating2 a {
+  width: 100%;
+  height: 60px;
+  display: block;
+}
+
+.rating2 .star-1 {
+  width: 60px;
+  z-index: 8;
+}
+
+.rating2 .star-1:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("meeple.png") 70px 0/60px no-repeat, url("meeple.png") 140px 0/60px no-repeat, url("meeple.png") 210px 0/60px no-repeat, url("meeple.png") 280px 0/60px no-repeat, url("meeple.png") 350px 0/60px no-repeat, url("meeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2 .star-2 {
+  width: 130px;
+  z-index: 7;
+}
+
+.rating2 .star-2:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("meeple.png") 140px 0/60px no-repeat, url("meeple.png") 210px 0/60px no-repeat, url("meeple.png") 280px 0/60px no-repeat, url("meeple.png") 350px 0/60px no-repeat, url("meeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2 .star-3 {
+  width: 200px;
+  z-index: 6;
+}
+
+.rating2 .star-3:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("yellowmeeple.png") 140px 0/60px no-repeat, url("meeple.png") 210px 0/60px no-repeat, url("meeple.png") 280px 0/60px no-repeat, url("meeple.png") 350px 0/60px no-repeat, url("meeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2 .star-4 {
+  width: 270px;
+  z-index: 5;
+}
+
+.rating2 .star-4:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("yellowmeeple.png") 140px 0/60px no-repeat, url("yellowmeeple.png") 210px 0/60px no-repeat, url("meeple.png") 280px 0/60px no-repeat, url("meeple.png") 350px 0/60px no-repeat, url("meeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2 .star-5 {
+  width: 340px;
+  z-index: 4;
+}
+
+.rating2 .star-5:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("yellowmeeple.png") 140px 0/60px no-repeat, url("yellowmeeple.png") 210px 0/60px no-repeat, url("yellowmeeple.png") 280px 0/60px no-repeat, url("meeple.png") 350px 0/60px no-repeat, url("meeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2 .star-6 {
+  width: 410px;
+  z-index: 3;
+}
+
+.rating2 .star-6:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("yellowmeeple.png") 140px 0/60px no-repeat, url("yellowmeeple.png") 210px 0/60px no-repeat, url("yellowmeeple.png") 280px 0/60px no-repeat, url("yellowmeeple.png") 350px 0/60px no-repeat, url("meeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2 .star-7 {
+  width: 480px;
+  z-index: 2;
+}
+
+.rating2 .star-7:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("yellowmeeple.png") 140px 0/60px no-repeat, url("yellowmeeple.png") 210px 0/60px no-repeat, url("yellowmeeple.png") 280px 0/60px no-repeat, url("yellowmeeple.png") 350px 0/60px no-repeat, url("yellowmeeple.png") 420px 0/60px no-repeat, url("meeple.png") 490px 0/60px no-repeat;
+}
+
+.rating2 .star-8 {
+  width: 550px;
+  z-index: 1;
+}
+
+.rating2 .star-8:hover {
+  background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("yellowmeeple.png") 140px 0/60px no-repeat, url("yellowmeeple.png") 210px 0/60px no-repeat, url("yellowmeeple.png") 280px 0/60px no-repeat, url("yellowmeeple.png") 350px 0/60px no-repeat, url("yellowmeeple.png") 420px 0/60px no-repeat, url("yellowmeeple.png") 490px 0/60px no-repeat;
+}
+
+
+
+
+
+
+
+
+
+
