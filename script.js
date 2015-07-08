@@ -18,7 +18,25 @@ then click on x will hide dialog
 
 /*learn what the heack makes the meeples work!!!*/
 
+/*when user logs in or creates account update the gamer list*/
+
+/*improvements:
+make list alphabetical for gamers - DONE!!!!
+
+glitch when user creates new account and gamer list updates
+- could add fade in fade out css
+- could make it so just the new user is added
+*/
+
+window.onload = function() {
+     if(debug){console.log("onload");}
+    populateUserList();
+  }; 
+
+var debug = true;
+
 var populateUserList = function() {
+  if(debug){console.log("populateUserList");}
 	var query = new Parse.Query(Parse.User);
 	query.ascending("username");
 	query.find({
@@ -29,13 +47,25 @@ var populateUserList = function() {
   		}
 	});
 };
-populateUserList();
+
+var clearUserList = function() {
+   if(debug){console.log("clearUserList");}
+  document.getElementById("user_list").innerHTML = "";
+};
+
+var resetUserList = function() {
+  if(debug){console.log("resetUserList");}
+  clearUserList();
+  populateUserList();
+};
 
 var showDialog = function() {
+   if(debug){console.log("showDialog");}
 	document.getElementById("login_dialog").style.display = "block";
 };
 
 var hideDialog = function() {
+   if(debug){console.log("hideDialog");}
 	document.getElementById("login_dialog").style.display = "none";
 	document.getElementById("dialog_title").innerHTML = "Login";
 	document.getElementById("login_dialog_btn").style.display = "inline";
@@ -47,6 +77,7 @@ var hideDialog = function() {
 };
 
 var clearDialog = function() {
+   if(debug){console.log("clearDialog");}
 	document.getElementById("txtbox_gamer").value = "";
 	document.getElementById("txtbox_password").value = "";
 	document.getElementById("txtbox_email").value = "";
@@ -54,6 +85,7 @@ var clearDialog = function() {
 
 
 var logout = function() {
+   if(debug){console.log("logout");}
 		Parse.User.logOut();
 		document.getElementById("login_btn_label").innerHTML = "You must login to vote!";
 		document.getElementById("login_button").innerHTML = "LogIn";
@@ -61,6 +93,7 @@ var logout = function() {
 	};
 
 var toggleDialog = function() {
+   if(debug){console.log("toggleDialog");}
 	document.getElementById("dialog_title").innerHTML = "Create Account";
 	document.getElementById("login_dialog_btn").style.display = "none";
   	document.getElementById("email_label").style.display = "inline";
@@ -70,6 +103,7 @@ var toggleDialog = function() {
 }
 
 var register = function() {
+   if(debug){console.log("register");}
 	var user = new Parse.User();
 	var username = document.getElementById("txtbox_gamer").value;
 	user.set("username", username);
@@ -84,6 +118,7 @@ var register = function() {
   			document.getElementById("login_btn_label").innerHTML = username;
   			document.getElementById("login_button").innerHTML = "Logout";
     		document.getElementById("login_button").onclick = logout;
+        resetUserList();
     		hideDialog();
     		clearDialog();
   		},
@@ -107,6 +142,7 @@ after a game night:
  set the class according to user status
 */
 var login = function() {
+   if(debug){console.log("login");}
 	var username = document.getElementById("txtbox_gamer").value;
 	Parse.User.logIn(username, document.getElementById("txtbox_password").value, {
   success: function(user) {
@@ -123,6 +159,7 @@ var login = function() {
 };
 
 var meepleClicked = function() {
+   if(debug){console.log("meepleClicked");}
 	alert("You have voted!");
 };
 
