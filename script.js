@@ -57,11 +57,9 @@ var eventHandlers = function() {
         query.get(gameNode.id, {
           success: function(games) {
             previousVote = games.get("vote");
-            console.log(games.get("vote"));
             var games = new Games();
             games.save({objectId: gameNode.id, vote: previousVote + parseInt(voteNumber)});
             gameNode.getElementsByClassName('votes')[0].innerHTML = previousVote + parseInt(voteNumber);
-            console.log(gameNode.getElementsByClassName('votes')[0].innerHTML);
           },
           error: function(object, error) {
             console.log(error);
