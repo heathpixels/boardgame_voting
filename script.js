@@ -59,6 +59,16 @@ var resetUserList = function() {
   populateUserList();
 };
 
+var showVotingDialog = function() {
+   if(debug){console.log("showVotingDialog");}
+  document.getElementById("howto_dialog").style.display = "block";
+};
+
+var hideVotingDialog = function() {
+   if(debug){console.log("hideVotingDialog");}
+  document.getElementById("howto_dialog").style.display = "none";
+};
+
 var showDialog = function() {
    if(debug){console.log("showDialog");}
 	document.getElementById("login_dialog").style.display = "block";

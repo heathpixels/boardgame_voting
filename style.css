@@ -141,7 +141,7 @@ td a {
 	margin-top: 100px;
 }
 
-#login_dialog {
+.dialog {
 	position:absolute;
 	margin-top: 10%;
 	margin-left: 20%;
@@ -182,14 +182,13 @@ td a {
 	cursor: pointer;
 }
 
-#submit_button{
-	display:none;
-	margin-top: 30px;
+.dialog_button {
 	border-radius: 10px;
 }
 
-#login_dialog_btn {
-	border-radius: 10px;
+#submit_button{
+	display:none;
+	margin-top: 30px;
 }
 
 .status_busy::before {
