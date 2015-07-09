@@ -272,6 +272,10 @@ td a {
   background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("meeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
 }
 
+.rating .star-1 selected{
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("meeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
 .rating .star-2 {
   width: 90px;
   z-index: 4;

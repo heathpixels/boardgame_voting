@@ -35,6 +35,22 @@ Allow users to move the dialog boxes around
 window.onload = function() {
      if(debug){console.log("onload");}
     populateUserList();
+
+for(var count = 0; count < document.getElementsByClassName('gamevote').length; count++){
+    document.getElementsByClassName('gamevote')[count].onclick = function() {
+      console.log("You voted "+this.className.split(" ")[1].split("-")[1]+" on the game "+ this.parentNode.parentNode.parentNode.id);
+
+      //user will vote on game with a value 1-5
+      //before saving vote see if user has enough left
+      //save vote in database
+      var Games = Parse.Object.extend("Games");
+      var games = new Games();
+      games.save({objectId: this.parentNode.parentNode.parentNode.id, vote: parseInt(this.className.split(" ")[1].split("-")[1])});
+      //set meeples 1-vote as selected permenamntly
+      //update user vote counter
+      //update game total votes
+    };
+  }
   }; 
 
 var debug = true;
@@ -172,20 +188,5 @@ var login = function() {
 });
 };
 
-var meepleClicked = function() {
-   if(debug){console.log("meepleClicked");}
-	alert("You have voted!");
-};
-
-var ilist = document.images;
-
-for(var i = 0; i < ilist.length; i++) {
-   	ilist[i].onclick=meepleClicked;
-}
 
 
-//user will vote on game with a value 1-5
-/*var Games = Parse.Object.extend("Games");
-var games = new Games();
-games.save({game: "Pandemic", vote: 5}).then(function(object) {
-});*/
