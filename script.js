@@ -26,6 +26,10 @@ make list alphabetical for gamers - DONE!!!!
 glitch when user creates new account and gamer list updates
 - could add fade in fade out css
 - could make it so just the new user is added
+
+Allow users to move the dialog boxes around
+- use onmousedown, onmousemove, onmouseup events to update x,y of box
+- use jquery drag or equivalent function
 */
 
 window.onload = function() {

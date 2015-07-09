@@ -143,7 +143,7 @@ td a {
 
 .dialog {
 	position:absolute;
-	margin-top: 10%;
+	margin-top: 1%;
 	margin-left: 20%;
 	background-color: lightgrey;
 	border-radius: 15px;
@@ -156,6 +156,17 @@ td a {
 	text-align: center;
 	font-size: 2em;
 	display: none;
+}
+
+#howto_dialog {
+	height: 650px;
+}
+
+#howto_dialog p {
+	text-align: left;
+	font-size: .7em;
+	padding: 15px;
+	margin-bottom: 5px;
 }
 
 #close_button {
@@ -394,7 +405,17 @@ td a {
   background: url("yellowmeeple.png") 0px 0/60px no-repeat, url("yellowmeeple.png") 70px 0/60px no-repeat, url("yellowmeeple.png") 140px 0/60px no-repeat, url("yellowmeeple.png") 210px 0/60px no-repeat, url("yellowmeeple.png") 280px 0/60px no-repeat, url("yellowmeeple.png") 350px 0/60px no-repeat, url("yellowmeeple.png") 420px 0/60px no-repeat, url("yellowmeeple.png") 490px 0/60px no-repeat;
 }
 
+.meeple {
+	content: url("meeple.png");
+	height: 20px;
+	width: auto;
+}
 
+.yellowmeeple {
+	content: url("yellowmeeple.png");
+	height: 20px;
+	width: auto;
+}
 
 
 
