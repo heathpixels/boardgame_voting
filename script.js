@@ -32,13 +32,16 @@ Allow users to move the dialog boxes around
 - use jquery drag or equivalent function
 */
 
+//DEBUG flag
+var debug = true;
+
 window.onload = function() {
      if(debug){console.log("onload");}
     populateUserList();
 
 for(var count = 0; count < document.getElementsByClassName('gamevote').length; count++){
     document.getElementsByClassName('gamevote')[count].onclick = function() {
-      console.log("You voted "+this.className.split(" ")[1].split("-")[1]+" on the game "+ this.parentNode.parentNode.parentNode.id);
+      if(debug){console.log("You voted "+this.className.split(" ")[1].split("-")[1]+" on the game "+ this.parentNode.parentNode.parentNode.id);}
 
       //user will vote on game with a value 1-5
       //before saving vote see if user has enough left
@@ -52,8 +55,6 @@ for(var count = 0; count < document.getElementsByClassName('gamevote').length; c
     };
   }
   }; 
-
-var debug = true;
 
 var populateUserList = function() {
   if(debug){console.log("populateUserList");}
