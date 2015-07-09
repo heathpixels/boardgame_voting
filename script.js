@@ -36,25 +36,44 @@ Allow users to move the dialog boxes around
 var debug = true;
 
 window.onload = function() {
-     if(debug){console.log("onload");}
-    populateUserList();
+  if(debug){console.log("onload");}
+  populateUserList();
+  eventHandlers();
+  
+}; 
 
-for(var count = 0; count < document.getElementsByClassName('gamevote').length; count++){
-    document.getElementsByClassName('gamevote')[count].onclick = function() {
-      if(debug){console.log("You voted "+this.className.split(" ")[1].split("-")[1]+" on the game "+ this.parentNode.parentNode.parentNode.id);}
+var eventHandlers = function() {
+  for(var count = 0; count < document.getElementsByClassName('gamevote').length; count++){
+      document.getElementsByClassName('gamevote')[count].onclick = function() {
+        var voteNumber = this.className.split(" ")[1].split("-")[1];
+        var gameNode = this.parentNode.parentNode.parentNode;
+        if(debug){console.log("You voted "+voteNumber+" on the game "+ gameNode.id);}
 
-      //user will vote on game with a value 1-5
-      //before saving vote see if user has enough left
-      //save vote in database
-      var Games = Parse.Object.extend("Games");
-      var games = new Games();
-      games.save({objectId: this.parentNode.parentNode.parentNode.id, vote: parseInt(this.className.split(" ")[1].split("-")[1])});
-      //set meeples 1-vote as selected permenamntly
-      //update user vote counter
-      //update game total votes
-    };
-  }
-  }; 
+        //user will vote on game with a value 1-5
+        //before saving vote see if user has enough left
+        var Games = Parse.Object.extend("Games");
+        var query = new Parse.Query(Games);
+        var previousVote = 0;
+        query.get(gameNode.id, {
+          success: function(games) {
+            previousVote = games.get("vote");
+            console.log(games.get("vote"));
+            var games = new Games();
+            games.save({objectId: gameNode.id, vote: previousVote + parseInt(voteNumber)});
+            gameNode.getElementsByClassName('votes')[0].innerHTML = previousVote + parseInt(voteNumber);
+            console.log(gameNode.getElementsByClassName('votes')[0].innerHTML);
+          },
+          error: function(object, error) {
+            console.log(error);
+          }
+        });
+        
+        //set meeples 1-vote as selected permenamntly
+        //update user vote counter
+        
+      };
+    }
+};
 
 var populateUserList = function() {
   if(debug){console.log("populateUserList");}
