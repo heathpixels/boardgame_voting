@@ -1,29 +1,33 @@
 Parse.initialize("pNtTrIuHsxuyVUVIS3zS3xoeODD08lhYWFlQPKdP", "Ovi9IPHB7UhgpyeH1doioqEIzyuxOGQ80HsINpXp");
 
 /*voting
-every meeple has event handler to say I am clicked!
-event handler will have to figure out which in the row 1-5 was clicked
-will have to figure out which game it corresponds to
-do a check to make sure they have enough votes and if not give an alert
-save vote to database and then
 then permanently update css to reflect vote
-also update total vote in table
+
+be able to undo votes
+update the vote table again
+update game total in database
+update remainVotes for user
+
+update status meeples
+when user votes 
+set currentUser status to going
+update user list to turn status meeple green
+
+when user logs in and votesRemaining === 5 
+set currentUser status to busy
+update status meeple red in user list
+
+autoreset:
+votes to 5
+games to 0
+status to unknown
 */
 
-/*create how the voting works dialog
-similar to showdialog when clicked
-then have rules
-then click on x will hide dialog
-*/
-
-/*learn what the heack makes the meeples work!!!*/
-
-/*when user logs in or creates account update the gamer list*/
+/*learn what the heck makes the meeples work!!!*/
 
 /*improvements:
-make list alphabetical for gamers - DONE!!!!
 
-glitch when user creates new account and gamer list updates
+flicker when user creates new account and gamer list updates
 - could add fade in fade out css
 - could make it so just the new user is added
 
@@ -125,7 +129,8 @@ var eventHandlers = function() {
       };
     }
 };
-// use cloud code
+
+// use cloud code or delete from here
 var votingReset = function () {
   if(debug){console.log("votingReset");}
   //get list of users
@@ -170,7 +175,7 @@ var populateUserList = function() {
 };
 
 var clearUserList = function() {
-   if(debug){console.log("clearUserList");}
+  if(debug){console.log("clearUserList");}
   document.getElementById("user_list").innerHTML = "";
 };
 
@@ -181,34 +186,34 @@ var resetUserList = function() {
 };
 
 var showVotingDialog = function() {
-   if(debug){console.log("showVotingDialog");}
+  if(debug){console.log("showVotingDialog");}
   document.getElementById("howto_dialog").style.display = "block";
 };
 
 var hideVotingDialog = function() {
-   if(debug){console.log("hideVotingDialog");}
+  if(debug){console.log("hideVotingDialog");}
   document.getElementById("howto_dialog").style.display = "none";
 };
 
 var showDialog = function() {
-   if(debug){console.log("showDialog");}
+  if(debug){console.log("showDialog");}
 	document.getElementById("login_dialog").style.display = "block";
 };
 
 var hideDialog = function() {
-   if(debug){console.log("hideDialog");}
+  if(debug){console.log("hideDialog");}
 	document.getElementById("login_dialog").style.display = "none";
 	document.getElementById("dialog_title").innerHTML = "Login";
 	document.getElementById("login_dialog_btn").style.display = "inline";
-  	document.getElementById("email_label").style.display = "none";
-    document.getElementById("submit_button").style.display = "none";
-    document.getElementById("create_account").style.display = "block";
-        document.getElementById("txtbox_email").style.display = "none";
-    clearDialog();
+  document.getElementById("email_label").style.display = "none";
+  document.getElementById("submit_button").style.display = "none";
+  document.getElementById("create_account").style.display = "block";
+  document.getElementById("txtbox_email").style.display = "none";
+  clearDialog();
 };
 
 var clearDialog = function() {
-   if(debug){console.log("clearDialog");}
+  if(debug){console.log("clearDialog");}
 	document.getElementById("txtbox_gamer").value = "";
 	document.getElementById("txtbox_password").value = "";
 	document.getElementById("txtbox_email").value = "";
@@ -216,22 +221,22 @@ var clearDialog = function() {
 
 
 var logout = function() {
-   if(debug){console.log("logout");}
+  if(debug){console.log("logout");}
 		Parse.User.logOut();
 		document.getElementById("login_btn_label").innerHTML = "You must login to vote!";
 		document.getElementById("login_button").innerHTML = "LogIn";
     document.getElementById("login_button").onclick = showDialog;
-	};
+};
 
 var toggleDialog = function() {
-   if(debug){console.log("toggleDialog");}
+  if(debug){console.log("toggleDialog");}
 	document.getElementById("dialog_title").innerHTML = "Create Account";
 	document.getElementById("login_dialog_btn").style.display = "none";
-  	document.getElementById("email_label").style.display = "inline";
-    document.getElementById("txtbox_email").style.display = "inline";
-    document.getElementById("create_account").style.display = "none";
-    document.getElementById("submit_button").style.display = "inline";
-}
+  document.getElementById("email_label").style.display = "inline";
+  document.getElementById("txtbox_email").style.display = "inline";
+  document.getElementById("create_account").style.display = "none";
+  document.getElementById("submit_button").style.display = "inline";
+};
 
 var register = function() {
   if(debug){console.log("register");}
@@ -250,45 +255,28 @@ var register = function() {
     		document.getElementById("login_button").onclick = logout;
         resetUserList();
     		hideDialog();
-    		clearDialog();
   		},
   		error: function(user, error) {
     		alert("Error: " + error.code + " " + error.message);
   		}
 	});
 }
-/*
-after a game night:
- everyone's status goes to neutral
- game votes go to zero
- user votes return to 5
- ------
- user logs in & uses a vote:
- each user has a status
- upon vote, if they haven't voted yet... call status_going
- update/refresh userlist with new status
- ----
- when we make the user list
- set the class according to user status
-*/
-
 
 var login = function() {
-   if(debug){console.log("login");}
+  if(debug){console.log("login");}
 	var username = document.getElementById("txtbox_gamer").value;
 	Parse.User.logIn(username, document.getElementById("txtbox_password").value, {
-  success: function(user) {
-    currentUser = Parse.User.current();
-    document.getElementById("login_btn_label").innerHTML = username;
-  	document.getElementById("login_button").innerHTML = "Logout";
-    document.getElementById("login_button").onclick = logout;
-    hideDialog();
-    clearDialog();
-  },
-  error: function(user, error) {
-   	alert("Error: " + error.code + " " + error.message);
-  }
-});
+    success: function(user) {
+      currentUser = Parse.User.current();
+      document.getElementById("login_btn_label").innerHTML = username;
+  	  document.getElementById("login_button").innerHTML = "Logout";
+      document.getElementById("login_button").onclick = logout;
+      hideDialog();
+    },
+    error: function(user, error) {
+   	  alert("Error: " + error.code + " " + error.message);
+    }
+  });
 };
 
 
