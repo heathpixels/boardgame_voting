@@ -257,12 +257,6 @@ td a {
   position: absolute;
 }
 
-.rating a {
-  width: 100%;
-  height: 50px;
-  display: block;
-}
-
 .rating .star-1 {
   width: 40px;
   z-index: 5;
@@ -272,7 +266,7 @@ td a {
   background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("meeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
 }
 
-.rating .star-1 selected{
+.star-1.selected{
   background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("meeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
 }
 
@@ -285,12 +279,20 @@ td a {
   background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
 }
 
+.star-2.selected {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("meeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
 .rating .star-3 {
   width: 140px;
   z-index: 3;
 }
 
 .rating .star-3:hover {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
+.star-3.selected {
   background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("meeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
 }
 
@@ -303,12 +305,20 @@ td a {
   background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("yellowmeeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
 }
 
+.star-4.selected {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("yellowmeeple.png") 150px 0/40px no-repeat, url("meeple.png") 200px 0/40px no-repeat;
+}
+
 .rating .star-5 {
   width: 240px;
   z-index: 1;
 }
 
 .rating .star-5:hover {
+  background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("yellowmeeple.png") 150px 0/40px no-repeat, url("yellowmeeple.png") 200px 0/40px no-repeat;
+}
+
+.star-5.selected {
   background: url("yellowmeeple.png") 0px 0/40px no-repeat, url("yellowmeeple.png") 50px 0/40px no-repeat, url("yellowmeeple.png") 100px 0/40px no-repeat, url("yellowmeeple.png") 150px 0/40px no-repeat, url("yellowmeeple.png") 200px 0/40px no-repeat;
 }
 

@@ -63,6 +63,8 @@ var eventHandlers = function() {
         var voteNumber = this.className.split(" ")[1].split("-")[1];
         //get the row of the game voted on by traversing up the DOM of the parent nodes of meeple clicked
         var gameNode = this.parentNode.parentNode.parentNode;
+        //save away the current list item clicked
+        var meepleClicked = this;
         
         //if user is logged in continue, else ask them to log in
         if(currentUser){
@@ -111,6 +113,8 @@ var eventHandlers = function() {
                 currentUser.set("votesRemaining", meeplesAfterVote);
                 //TODO: update what the user voted on user.set("gameVotes", {});
                 currentUser.save();
+                console.log(meepleClicked);
+                meepleClicked.className += " selected";
               },
               error: function(object, error) {
                 console.log(error);
@@ -122,10 +126,6 @@ var eventHandlers = function() {
         } else {
           alert("You need to login before you can vote!");
         }
-        
-        //set meeples 1-vote as selected permenamntly
-        //reset voting values at the end of the voting period using cloud code
-        
       };
     }
 };
@@ -156,6 +156,8 @@ var populateGameVotes = function() {
     success: function(games) {
       for( var i=0; i < games.length; i++ ){
         document.getElementsByClassName('votes')[i].innerHTML = games[i].get("vote");
+        //need to only add selected to games voted by that person
+        //document.getElementsByClassName('votes')[i].previousSibling.getElementsByClassName("star-"+games[i].get("vote")).className += " selected";
       }
     }
   });
