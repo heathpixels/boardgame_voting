@@ -117,13 +117,36 @@ var eventHandlers = function() {
                 //updating the game table with the new total
                 gameNode.getElementsByClassName('votes')[0].innerHTML = previousVote + parseInt(voteNumber);
 
-                //save vote
-                var voteObject = new Votes();
+                //lookup currentUser in Votes table 
+
+                //TODO: Move this to login and logout areas and just do the save here
                 var gameNumber = "Game"+games.get("gameOrder");
-                var relation = voteObject.relation("Voters");
-                relation.add(currentUser);
-                voteObject.set(gameNumber, voteNumber);
-                voteObject.save();
+                var voteObject = "";
+                var query = new Parse.Query(Votes);
+                query.equalTo("Voters", currentUser);
+                query.find({
+                  success:function(results) {
+                    //if user already exists in votes database 
+                    if(results.length > 0) { 
+                      voteObject = results[0];
+                      // get row and update data
+                      alert("user exists: "+gameNumber + " " +voteNumber);
+                       voteObject.set(gameNumber, voteNumber);
+                       voteObject.save();
+                    }else{
+                        //if user is not in votes database
+                        alert("user does NOT exist: "+gameNumber + " " +voteNumber);
+                        voteObject = new Votes();
+                        var relation = voteObject.relation("Voters");
+                        relation.add(currentUser);
+                        voteObject.set(gameNumber, voteNumber);
+                        voteObject.save();
+                    }
+                  },
+                  fail:function(object, error){
+                    console.log('Voter table not found.'+error);
+                  }
+                });
 
                 //update votesRemaining for the currentUser
                 currentUser.set("votesRemaining", meeplesAfterVote);
@@ -164,6 +187,23 @@ var votingReset = function () {
   });
 };
 
+//Pick up here and set users votes to selected on login
+var setSelectedMeeples = function() {
+        if(debug){console.log("setSelectedMeeples");}
+        //need to only add selected to games voted by that person
+        //need to get the games voted on by that person
+        var Votes = Parse.Object.extend("Votes");
+        var query = new Parse.Query(Votes);
+        query.equalTo("Voters", currentUser);
+        query.find({
+          success:function(results) {
+               //document.getElementsByClassName('votes')[i].previousSibling.getElementsByClassName("star-"+games[i].get("vote")).className += " selected";
+             console.log(list);
+          }
+         });
+      
+};
+
 var populateGameVotes = function() {
   if(debug){console.log("populateGameVotes");}
   var Games = Parse.Object.extend("Games");
@@ -173,8 +213,6 @@ var populateGameVotes = function() {
     success: function(games) {
       for( var i=0; i < games.length; i++ ){
           document.getElementsByClassName('votes')[i].innerHTML = games[i].get("vote");
-        //need to only add selected to games voted by that person
-        //document.getElementsByClassName('votes')[i].previousSibling.getElementsByClassName("star-"+games[i].get("vote")).className += " selected";
       }
     }
   });
@@ -294,6 +332,7 @@ var login = function() {
       document.getElementById("login_btn_label").innerHTML = username;
   	  document.getElementById("login_button").innerHTML = "Logout";
       document.getElementById("login_button").onclick = logout;
+      setSelectedMeeples();
       hideDialog();
     },
     error: function(user, error) {
