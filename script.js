@@ -6,18 +6,12 @@ check validity of input and output from user
 */
 
 /*voting
-then permanently update css to reflect vote
-update css when logged out. (no yellow meeples)
-fix alert message after logged out while trying to vote.
-
 be able to undo votes
 update the vote table again
 update game total in database
 update remainVotes for user
 
 update status meeples
-when user votes 
-set currentUser status to going
 update user list to turn status meeple green
 
 when user logs in and votesRemaining === 5 
@@ -29,8 +23,6 @@ votes to 5
 games to 0
 status to unknown
 */
-
-/*learn what the heck makes the meeples work!!!*/
 
 /*improvements:
 
@@ -102,6 +94,9 @@ var eventHandlers = function() {
                 var previousVote = games.get("vote");
                 //if previousVote is undefined set to 0
                 if(!previousVote){previousVote=0;}
+
+                setCurrentUserGoing();
+
                 //alert user what they voted and thank them if they used all their votes
                 if(meeplesAfterVote != 0){
                   alert("You voted "+voteNumber+" on the game " + games.get("game") + ". " + "You have " + meeplesAfterVote + " meeple(s) left.");
@@ -178,7 +173,7 @@ var setSelectedMeeples = function() {
           console.log("Game "+i+" votes: "+voterObject.attributes[gameString]);
           if(voterObject.attributes[gameString] != undefined){
             //setselected class
-            document.getElementById(id).getElementsByClassName("star-"+voterObject.attributes[gameString])[0].className += " selected";
+            document.getElementById(games[i-1].id).getElementsByClassName("star-"+voterObject.attributes[gameString])[0].className += " selected";
           }
         }
       }
@@ -291,6 +286,7 @@ var register = function() {
 	user.set("username", username);
 	user.set("password", document.getElementById("txtbox_password").value);
 	user.set("email", document.getElementById("txtbox_email").value);
+  user.set("status", "unknown");
   user.set("votesRemaining", 5);
 	
 	user.signUp(null, {
@@ -299,6 +295,7 @@ var register = function() {
   			document.getElementById("login_btn_label").innerHTML = username;
   			document.getElementById("login_button").innerHTML = "Logout";
     		document.getElementById("login_button").onclick = logout;
+        setVoterObject(); //must come after set current user 
         resetUserList();
     		hideDialog();
   		},
@@ -318,6 +315,11 @@ var login = function() {
   	  document.getElementById("login_button").innerHTML = "Logout";
       document.getElementById("login_button").onclick = logout;
       setVoterObject(); //must come after set current user 
+      //check if votes remaining is less than 5
+      //check if current userStatus is 'going'
+      if(currentUser.get("votesRemaining") < 5){
+        setCurrentUserGoing();
+      }
       hideDialog();
     },
     error: function(user, error) {
@@ -350,6 +352,25 @@ var setVoterObject = function() {
         console.log('Voter table not found.'+error);
       }
     });
-}
+};
+
+var setCurrentUserGoing = function () {
+  if(debug){console.log("setCurrentUserGoing");}
+  if((currentUser.get("status") != "going")){
+    //update currentUsers status to 'going'
+    currentUser.set("status", "going");
+    currentUser.save();
+    //update the view
+    var userList = document.getElementById("user_list").getElementsByClassName("status_neutral");
+    var tmpuser = "";
+    for(var tmp = 0; tmp < userList.length; tmp++ ){
+      tmpuser = userList[tmp].innerHTML;
+      if(tmpuser === currentUser.get("username")){
+        document.getElementById("user_list").getElementsByClassName("status_neutral")[tmp].className = "status_going";
+        break;
+      }
+    }
+  }
+};
 
 
