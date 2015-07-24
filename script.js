@@ -1,7 +1,14 @@
 Parse.initialize("pNtTrIuHsxuyVUVIS3zS3xoeODD08lhYWFlQPKdP", "Ovi9IPHB7UhgpyeH1doioqEIzyuxOGQ80HsINpXp");
+/*security
+get a new key from parse generated and don't check into repo
+check for cross site scripting
+check validity of input and output from user
+*/
 
 /*voting
 then permanently update css to reflect vote
+update css when logged out. (no yellow meeples)
+fix alert message after logged out while trying to vote.
 
 be able to undo votes
 update the vote table again
@@ -46,7 +53,6 @@ window.onload = function() {
   populateUserList();
   populateGameVotes();
   eventHandlers();
-  
 }; 
 
 var eventHandlers = function() {
@@ -83,6 +89,8 @@ var eventHandlers = function() {
 
             //create game object
             var Games = Parse.Object.extend("Games");
+            //create vote object
+            var Votes = Parse.Object.extend("Votes");
             //create query on game objects
             var query = new Parse.Query(Games);
 
@@ -97,7 +105,7 @@ var eventHandlers = function() {
                 if(!previousVote){previousVote=0;}
                 //alert user what they voted and thank them if they used all their votes
                 if(meeplesAfterVote != 0){
-                  alert("You voted "+voteNumber+" on the game " + games.get("game") + ". " + "You have " + meeplesAfterVote + " meeples left.");
+                  alert("You voted "+voteNumber+" on the game " + games.get("game") + ". " + "You have " + meeplesAfterVote + " meeple(s) left.");
                 }else{
                   alert("You voted "+voteNumber+" on the game " + games.get("game") + ". " + "You have " + meeplesAfterVote + " meeples left. Thanks for voting, see you at Game Night!");
                 }
@@ -109,8 +117,17 @@ var eventHandlers = function() {
                 //updating the game table with the new total
                 gameNode.getElementsByClassName('votes')[0].innerHTML = previousVote + parseInt(voteNumber);
 
+                //save vote
+                var voteObject = new Votes();
+                var gameNumber = "Game"+games.get("gameOrder");
+                var relation = voteObject.relation("Voters");
+                relation.add(currentUser);
+                voteObject.set(gameNumber, voteNumber);
+                voteObject.save();
+
                 //update votesRemaining for the currentUser
                 currentUser.set("votesRemaining", meeplesAfterVote);
+
                 //TODO: update what the user voted on user.set("gameVotes", {});
                 currentUser.save();
                 console.log(meepleClicked);
@@ -121,7 +138,7 @@ var eventHandlers = function() {
               }
             });
           } else {
-            alert("You only have enough meeples left to vote " + votesRemaining + " on this game. Otherwise, you will have to remove "+ (voteNumber-votesRemaining) +" meeples from other games to vote "+ voteNumber +" on this game.")
+            alert("You only have enough meeples left to vote " + votesRemaining + " on this game. Otherwise, you will have to remove "+ (voteNumber-votesRemaining) +" meeple(s) from other games to vote "+ voteNumber +" on this game.")
           }
         } else {
           alert("You need to login before you can vote!");
@@ -155,7 +172,7 @@ var populateGameVotes = function() {
   query.find({
     success: function(games) {
       for( var i=0; i < games.length; i++ ){
-        document.getElementsByClassName('votes')[i].innerHTML = games[i].get("vote");
+          document.getElementsByClassName('votes')[i].innerHTML = games[i].get("vote");
         //need to only add selected to games voted by that person
         //document.getElementsByClassName('votes')[i].previousSibling.getElementsByClassName("star-"+games[i].get("vote")).className += " selected";
       }
@@ -225,9 +242,13 @@ var clearDialog = function() {
 var logout = function() {
   if(debug){console.log("logout");}
 		Parse.User.logOut();
+    currentUser = "";
 		document.getElementById("login_btn_label").innerHTML = "You must login to vote!";
 		document.getElementById("login_button").innerHTML = "LogIn";
     document.getElementById("login_button").onclick = showDialog;
+    for(var count = 0; count < document.getElementsByClassName('gamevote').length; count++){
+      document.getElementsByClassName('gamevote')[count].classList.remove("selected");
+    }
 };
 
 var toggleDialog = function() {
