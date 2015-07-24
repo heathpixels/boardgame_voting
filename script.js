@@ -46,7 +46,8 @@ Allow users to move the dialog boxes around
 //DEBUG flag
 var debug = true;
 
-var currentUser = null;
+var currentUser = "";
+var voterObject = "";
 
 window.onload = function() {
   if(debug){console.log("onload");}
@@ -72,8 +73,8 @@ var eventHandlers = function() {
         //save away the current list item clicked
         var meepleClicked = this;
         
-        //if user is logged in continue, else ask them to log in
-        if(currentUser){
+        //if user is logged & voterObject exists then continue, else ask them to log in
+        if(currentUser && voterObject){
 
           //get votes user has remaining from database
           var votesRemaining = currentUser.get("votesRemaining");
@@ -89,8 +90,6 @@ var eventHandlers = function() {
 
             //create game object
             var Games = Parse.Object.extend("Games");
-            //create vote object
-            var Votes = Parse.Object.extend("Votes");
             //create query on game objects
             var query = new Parse.Query(Games);
 
@@ -117,37 +116,12 @@ var eventHandlers = function() {
                 //updating the game table with the new total
                 gameNode.getElementsByClassName('votes')[0].innerHTML = previousVote + parseInt(voteNumber);
 
-                //lookup currentUser in Votes table 
+                var gameNumber = "Game"+games.get("gameOrder");//TODO:Later could use something more robust than order like ID
 
-                //TODO: Move this to login and logout areas and just do the save here
-                var gameNumber = "Game"+games.get("gameOrder");
-                var voteObject = "";
-                var query = new Parse.Query(Votes);
-                query.equalTo("Voters", currentUser);
-                query.find({
-                  success:function(results) {
-                    //if user already exists in votes database 
-                    if(results.length > 0) { 
-                      voteObject = results[0];
-                      // get row and update data
-                      alert("user exists: "+gameNumber + " " +voteNumber);
-                       voteObject.set(gameNumber, voteNumber);
-                       voteObject.save();
-                    }else{
-                        //if user is not in votes database
-                        alert("user does NOT exist: "+gameNumber + " " +voteNumber);
-                        voteObject = new Votes();
-                        var relation = voteObject.relation("Voters");
-                        relation.add(currentUser);
-                        voteObject.set(gameNumber, voteNumber);
-                        voteObject.save();
-                    }
-                  },
-                  fail:function(object, error){
-                    console.log('Voter table not found.'+error);
-                  }
-                });
-
+                // get gobally saved voterObject row and update data
+                voterObject.set(gameNumber, voteNumber);
+                voterObject.save();
+  
                 //update votesRemaining for the currentUser
                 currentUser.set("votesRemaining", meeplesAfterVote);
 
@@ -187,21 +161,31 @@ var votingReset = function () {
   });
 };
 
-//Pick up here and set users votes to selected on login
+//set users votes to selected on login
 var setSelectedMeeples = function() {
-        if(debug){console.log("setSelectedMeeples");}
-        //need to only add selected to games voted by that person
-        //need to get the games voted on by that person
-        var Votes = Parse.Object.extend("Votes");
-        var query = new Parse.Query(Votes);
-        query.equalTo("Voters", currentUser);
-        query.find({
-          success:function(results) {
-               //document.getElementsByClassName('votes')[i].previousSibling.getElementsByClassName("star-"+games[i].get("vote")).className += " selected";
-             console.log(list);
+  if(debug){console.log("setSelectedMeeples");}
+  //need to only add selected class to games voted by that person
+  //need to get the games voted on by that person
+  if(voterObject){
+    var Games = Parse.Object.extend("Games");
+    var query = new Parse.Query(Games);
+    query.ascending("gameOrder");
+    query.find({
+      success: function(games) {
+        var gameString = "";
+        for( var i=1; i <= games.length; i++ ){
+          gameString = "Game"+i;
+          console.log("Game "+i+" votes: "+voterObject.attributes[gameString]);
+          if(voterObject.attributes[gameString] != undefined){
+            //setselected class
+            document.getElementById(id).getElementsByClassName("star-"+voterObject.attributes[gameString])[0].className += " selected";
           }
-         });
-      
+        }
+      }
+    });
+  }else{
+    console.log("voterObject not found!");
+  }
 };
 
 var populateGameVotes = function() {
@@ -281,6 +265,7 @@ var logout = function() {
   if(debug){console.log("logout");}
 		Parse.User.logOut();
     currentUser = "";
+    voterObject = "";
 		document.getElementById("login_btn_label").innerHTML = "You must login to vote!";
 		document.getElementById("login_button").innerHTML = "LogIn";
     document.getElementById("login_button").onclick = showDialog;
@@ -332,7 +317,7 @@ var login = function() {
       document.getElementById("login_btn_label").innerHTML = username;
   	  document.getElementById("login_button").innerHTML = "Logout";
       document.getElementById("login_button").onclick = logout;
-      setSelectedMeeples();
+      setVoterObject(); //must come after set current user 
       hideDialog();
     },
     error: function(user, error) {
@@ -341,5 +326,30 @@ var login = function() {
   });
 };
 
+var setVoterObject = function() {
+    if(debug){console.log("setVoterObject");}
+    //create vote object
+    var Votes = Parse.Object.extend("Votes");
+    var query = new Parse.Query(Votes);
+    query.equalTo("Voters", currentUser);
+    query.find({
+      success:function(results) {
+        //if user already exists in votes database get row for currentUser and store in global voterObject
+        if(results.length > 0) {
+          voterObject = results[0]; 
+        }else{
+            //if user is not in votes database
+            voterObject = new Votes();
+            var relation = voterObject.relation("Voters");
+            relation.add(currentUser);
+            voterObject.save();
+        }
+        setSelectedMeeples();
+      },
+      fail:function(object, error){
+        console.log('Voter table not found.'+error);
+      }
+    });
+}
 
 
