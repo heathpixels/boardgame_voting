@@ -202,7 +202,7 @@ td a {
 	margin-top: 30px;
 }
 
-.status_busy::before {
+.status.busy::before {
 	display: block;
 	content: url("redmeeple.png");
 	width: 30px;
@@ -211,7 +211,7 @@ td a {
     -moz-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
 }
 
-.status_going::before {
+.status.going::before {
 	display:block;
 	content: url("greenmeeple.png");
 	width:30px;
@@ -220,7 +220,7 @@ td a {
     -moz-transform: translateX(-50px) translateY(10px) rotate(-25deg) scale(0.06);
 }
 
-.status_neutral::before {
+.status.neutral::before {
 	display:block;
 	content: url("blackmeeple.png");
 	width:30px;

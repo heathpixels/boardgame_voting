@@ -11,9 +11,6 @@ update the vote table again
 update game total in database
 update remainVotes for user
 
-update status meeples
-update user list to turn status meeple green
-
 when user logs in and votesRemaining === 5 
 set currentUser status to busy
 update status meeple red in user list
@@ -204,7 +201,7 @@ var populateUserList = function() {
 	query.find({
   		success: function(users) {
     		for( var i=0; i < users.length; i++ ){
-    			document.getElementById("user_list").innerHTML += "<li class='status_neutral'>" + users[i].get('username') + "</li>";
+    			document.getElementById("user_list").innerHTML += "<li class='status neutral'>" + users[i].get('username') + "</li>";
     		}
   		}
 	});
@@ -319,6 +316,8 @@ var login = function() {
       //check if current userStatus is 'going'
       if(currentUser.get("votesRemaining") < 5){
         setCurrentUserGoing();
+      }else if (currentUser.get("votesRemaining") === 5){
+        setCurrentUserBusy();
       }
       hideDialog();
     },
@@ -361,16 +360,37 @@ var setCurrentUserGoing = function () {
     currentUser.set("status", "going");
     currentUser.save();
     //update the view
-    var userList = document.getElementById("user_list").getElementsByClassName("status_neutral");
+    var userList = document.getElementById("user_list").getElementsByClassName("status");
     var tmpuser = "";
     for(var tmp = 0; tmp < userList.length; tmp++ ){
       tmpuser = userList[tmp].innerHTML;
       if(tmpuser === currentUser.get("username")){
-        document.getElementById("user_list").getElementsByClassName("status_neutral")[tmp].className = "status_going";
+        document.getElementById("user_list").getElementsByClassName("status")[tmp].className = "status going";
         break;
       }
     }
   }
 };
+
+var setCurrentUserBusy = function () {
+  if(debug){console.log("setCurrentUserBusy");}
+  if((currentUser.get("status") != "busy")){
+    //update currentUsers status to 'busy'
+    currentUser.set("status", "busy");
+    currentUser.save();
+    //update the view
+    var userList = document.getElementById("user_list").getElementsByClassName("status");
+    var tmpuser = "";
+    for(var tmp = 0; tmp < userList.length; tmp++ ){
+      tmpuser = userList[tmp].innerHTML;
+      if(tmpuser === currentUser.get("username")){
+        document.getElementById("user_list").getElementsByClassName("status")[tmp].className = "status busy";
+        break;
+      }
+    }
+  }
+};
+
+
 
 
