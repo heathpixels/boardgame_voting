@@ -1,4 +1,5 @@
 Parse.initialize("pNtTrIuHsxuyVUVIS3zS3xoeODD08lhYWFlQPKdP", "Ovi9IPHB7UhgpyeH1doioqEIzyuxOGQ80HsINpXp");
+
 /*security
 get a new key from parse generated and don't check into repo
 check for cross site scripting
@@ -6,14 +7,19 @@ check validity of input and output from user
 */
 
 /*voting
+need to check MVC for multiple views on different machines
+already know will need to update total votes
+onchange event for total votes
+onchange event for status updates
+currently that means when people vote they won't see others changes until they reload page
+or logout?
+
+when refresh page... not log user out
+
 be able to undo votes
 update the vote table again
 update game total in database
 update remainVotes for user
-
-when user logs in and votesRemaining === 5 
-set currentUser status to busy
-update status meeple red in user list
 
 autoreset:
 votes to 5
@@ -22,6 +28,11 @@ status to unknown
 */
 
 /*improvements:
+
+dialog box to prompt if going
+yes - going
+no - busy
+unsure - unknown
 
 flicker when user creates new account and gamer list updates
 - could add fade in fade out css
@@ -74,8 +85,6 @@ var eventHandlers = function() {
           //before saving vote see if user has enough votes left
           //if votes remaining is valid continue else alert user
           if(meeplesAfterVote >= 0){
-
-            if(debug){console.log("You voted "+voteNumber+" on the game "+ gameNode.id + ". " + "You have " + meeplesAfterVote + " meeples left.");}
 
             //create game object
             var Games = Parse.Object.extend("Games");
@@ -167,7 +176,6 @@ var setSelectedMeeples = function() {
         var gameString = "";
         for( var i=1; i <= games.length; i++ ){
           gameString = "Game"+i;
-          console.log("Game "+i+" votes: "+voterObject.attributes[gameString]);
           if(voterObject.attributes[gameString] != undefined){
             //setselected class
             document.getElementById(games[i-1].id).getElementsByClassName("star-"+voterObject.attributes[gameString])[0].className += " selected";
@@ -201,7 +209,19 @@ var populateUserList = function() {
 	query.find({
   		success: function(users) {
     		for( var i=0; i < users.length; i++ ){
-    			document.getElementById("user_list").innerHTML += "<li class='status neutral'>" + users[i].get('username') + "</li>";
+          switch(users[i].get("status")){
+            case "busy":
+              document.getElementById("user_list").innerHTML += "<li class='status busy'>" + users[i].get('username') + "</li>";
+              break;
+            case "going":
+              document.getElementById("user_list").innerHTML += "<li class='status going'>" + users[i].get('username') + "</li>";
+              break;
+            case "uknown":
+              document.getElementById("user_list").innerHTML += "<li class='status neutral'>" + users[i].get('username') + "</li>";
+              break;
+            default:
+              document.getElementById("user_list").innerHTML += "<li class='status neutral'>" + users[i].get('username') + "</li>";
+          }
     		}
   		}
 	});
